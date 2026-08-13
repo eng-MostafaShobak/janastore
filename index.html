@@ -119,13 +119,13 @@
         const { useState } = React;
 
         // ========================================
-        // 8 أصناف مع صور معبرة (تم التعديل)
+        // 8 أصناف مع صور جديدة ومعبرة
         // ========================================
         const categories = [
             { 
                 id: 1, 
                 name: 'نسائي', 
-                image: 'https://images.pexels.com/photos/1183266/pexels-photo-1183266.jpeg?auto=compress&cs=tinysrgb&w=600' 
+                image: 'https://images.pexels.com/photos/2065195/pexels-photo-2065195.jpeg?auto=compress&cs=tinysrgb&w=600' 
             },
             { 
                 id: 2, 
@@ -135,17 +135,17 @@
             { 
                 id: 3, 
                 name: 'بناتي', 
-                image: 'https://images.pexels.com/photos/3518895/pexels-photo-3518895.jpeg?auto=compress&cs=tinysrgb&w=600' 
+                image: 'https://images.pexels.com/photos/1251171/pexels-photo-1251171.jpeg?auto=compress&cs=tinysrgb&w=600' 
             },
             { 
                 id: 4, 
                 name: 'صبياني', 
-                image: 'https://images.pexels.com/photos/1620760/pexels-photo-1620760.jpeg?auto=compress&cs=tinysrgb&w=600' 
+                image: 'https://images.pexels.com/photos/6958678/pexels-photo-6958678.jpeg?auto=compress&cs=tinysrgb&w=600' 
             },
             { 
                 id: 5, 
                 name: 'محاير بناتي', 
-                image: 'https://images.pexels.com/photos/190819/pexels-photo-190819.jpeg?auto=compress&cs=tinysrgb&w=600' 
+                image: 'https://images.pexels.com/photos/2012551/pexels-photo-2012551.jpeg?auto=compress&cs=tinysrgb&w=600' 
             },
             { 
                 id: 6, 
@@ -169,9 +169,9 @@
         // ========================================
         const allProducts = {
             1: [
-                { id: 101, name: 'فستان سهرة أنيق', price: 250, image: 'https://images.pexels.com/photos/1183266/pexels-photo-1183266.jpeg?auto=compress&cs=tinysrgb&w=600' },
-                { id: 102, name: 'بلوزة كاجوال', price: 120, image: 'https://images.pexels.com/photos/1183266/pexels-photo-1183266.jpeg?auto=compress&cs=tinysrgb&w=600' },
-                { id: 103, name: 'جاكيت شتوي', price: 180, image: 'https://images.pexels.com/photos/1183266/pexels-photo-1183266.jpeg?auto=compress&cs=tinysrgb&w=600' },
+                { id: 101, name: 'فستان سهرة أنيق', price: 250, image: 'https://images.pexels.com/photos/2065195/pexels-photo-2065195.jpeg?auto=compress&cs=tinysrgb&w=600' },
+                { id: 102, name: 'بلوزة كاجوال', price: 120, image: 'https://images.pexels.com/photos/2065195/pexels-photo-2065195.jpeg?auto=compress&cs=tinysrgb&w=600' },
+                { id: 103, name: 'جاكيت شتوي', price: 180, image: 'https://images.pexels.com/photos/2065195/pexels-photo-2065195.jpeg?auto=compress&cs=tinysrgb&w=600' },
             ],
             2: [
                 { id: 201, name: 'بدلة رسمية', price: 350, image: 'https://images.pexels.com/photos/1043474/pexels-photo-1043474.jpeg?auto=compress&cs=tinysrgb&w=600' },
@@ -179,19 +179,19 @@
                 { id: 203, name: 'بنطلون جينز', price: 150, image: 'https://images.pexels.com/photos/1043474/pexels-photo-1043474.jpeg?auto=compress&cs=tinysrgb&w=600' },
             ],
             3: [
-                { id: 301, name: 'فستان بناتي', price: 180, image: 'https://images.pexels.com/photos/3518895/pexels-photo-3518895.jpeg?auto=compress&cs=tinysrgb&w=600' },
-                { id: 302, name: 'تنورة', price: 100, image: 'https://images.pexels.com/photos/3518895/pexels-photo-3518895.jpeg?auto=compress&cs=tinysrgb&w=600' },
-                { id: 303, name: 'بلوزة أطفال', price: 70, image: 'https://images.pexels.com/photos/3518895/pexels-photo-3518895.jpeg?auto=compress&cs=tinysrgb&w=600' },
+                { id: 301, name: 'فستان بناتي', price: 180, image: 'https://images.pexels.com/photos/1251171/pexels-photo-1251171.jpeg?auto=compress&cs=tinysrgb&w=600' },
+                { id: 302, name: 'تنورة', price: 100, image: 'https://images.pexels.com/photos/1251171/pexels-photo-1251171.jpeg?auto=compress&cs=tinysrgb&w=600' },
+                { id: 303, name: 'بلوزة أطفال', price: 70, image: 'https://images.pexels.com/photos/1251171/pexels-photo-1251171.jpeg?auto=compress&cs=tinysrgb&w=600' },
             ],
             4: [
-                { id: 401, name: 'بدلة صبياني', price: 200, image: 'https://images.pexels.com/photos/1620760/pexels-photo-1620760.jpeg?auto=compress&cs=tinysrgb&w=600' },
-                { id: 402, name: 'جينز', price: 90, image: 'https://images.pexels.com/photos/1620760/pexels-photo-1620760.jpeg?auto=compress&cs=tinysrgb&w=600' },
-                { id: 403, name: 'تيشيرت', price: 60, image: 'https://images.pexels.com/photos/1620760/pexels-photo-1620760.jpeg?auto=compress&cs=tinysrgb&w=600' },
+                { id: 401, name: 'بدلة صبياني', price: 200, image: 'https://images.pexels.com/photos/6958678/pexels-photo-6958678.jpeg?auto=compress&cs=tinysrgb&w=600' },
+                { id: 402, name: 'جينز', price: 90, image: 'https://images.pexels.com/photos/6958678/pexels-photo-6958678.jpeg?auto=compress&cs=tinysrgb&w=600' },
+                { id: 403, name: 'تيشيرت', price: 60, image: 'https://images.pexels.com/photos/6958678/pexels-photo-6958678.jpeg?auto=compress&cs=tinysrgb&w=600' },
             ],
             5: [
-                { id: 501, name: 'حذاء كعب عالي', price: 150, image: 'https://images.pexels.com/photos/190819/pexels-photo-190819.jpeg?auto=compress&cs=tinysrgb&w=600' },
-                { id: 502, name: 'صندل', price: 80, image: 'https://images.pexels.com/photos/190819/pexels-photo-190819.jpeg?auto=compress&cs=tinysrgb&w=600' },
-                { id: 503, name: 'حذاء رياضي بناتي', price: 120, image: 'https://images.pexels.com/photos/190819/pexels-photo-190819.jpeg?auto=compress&cs=tinysrgb&w=600' },
+                { id: 501, name: 'حذاء كعب عالي', price: 150, image: 'https://images.pexels.com/photos/2012551/pexels-photo-2012551.jpeg?auto=compress&cs=tinysrgb&w=600' },
+                { id: 502, name: 'صندل', price: 80, image: 'https://images.pexels.com/photos/2012551/pexels-photo-2012551.jpeg?auto=compress&cs=tinysrgb&w=600' },
+                { id: 503, name: 'حذاء رياضي بناتي', price: 120, image: 'https://images.pexels.com/photos/2012551/pexels-photo-2012551.jpeg?auto=compress&cs=tinysrgb&w=600' },
             ],
             6: [
                 { id: 601, name: 'حذاء رياضي', price: 200, image: 'https://images.pexels.com/photos/2529148/pexels-photo-2529148.jpeg?auto=compress&cs=tinysrgb&w=600' },
