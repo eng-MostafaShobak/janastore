@@ -5,107 +5,116 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>🛍️ ملبوسات جنى</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
     <style>
         body { font-family: 'Cairo', sans-serif; background: #fafafa; margin: 0; padding: 0; }
-        .hero { 
-            background: linear-gradient(135deg, rgba(233, 30, 99, 0.88), rgba(156, 39, 176, 0.88)), 
-                        url('https://images.pexels.com/photos/7679720/pexels-photo-7679720.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
-            background-size: cover;
-            background-position: center;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-        }
-        .hero-content {
-            text-align: center;
-            color: white;
-            padding: 20px;
-        }
-        .hero-title {
-            font-size: 4rem;
-            font-weight: 800;
-            text-shadow: 0 4px 20px rgba(0,0,0,0.5);
-            margin-bottom: 16px;
-            letter-spacing: 2px;
-        }
-        .hero-subtitle {
-            font-size: 1.5rem;
-            opacity: 0.95;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.4);
-            margin-bottom: 32px;
-            letter-spacing: 1px;
-        }
-        .hero-button {
-            background: white;
-            color: #E91E63;
-            padding: 18px 48px;
-            border-radius: 50px;
-            font-size: 1.5rem;
-            font-weight: 700;
-            border: none;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 8px 30px rgba(0,0,0,0.3);
-        }
-        .hero-button:hover {
-            transform: scale(1.08);
-            box-shadow: 0 12px 40px rgba(233, 30, 99, 0.4);
-        }
-        .category-card {
-            transition: transform 0.3s, box-shadow 0.3s;
-            cursor: pointer;
-            background: white;
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.08);
-        }
-        .category-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 12px 35px rgba(233, 30, 99, 0.15);
-        }
-        .category-image {
-            width: 100%;
-            height: 200px;
-            object-fit: cover;
-        }
-        .back-button {
-            background: none;
-            border: none;
-            color: #E91E63;
-            font-size: 1.2rem;
-            font-weight: 600;
-            cursor: pointer;
-            padding: 10px 0;
-            transition: color 0.3s;
-        }
-        .back-button:hover {
-            color: #9C27B0;
-        }
-        .empty-state {
-            background: white;
-            border-radius: 16px;
-            padding: 60px 20px;
-            text-align: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.06);
-        }
-        .empty-icon {
-            font-size: 4rem;
-            margin-bottom: 16px;
-        }
-        .empty-title {
-            font-size: 1.5rem;
-            font-weight: 700;
-            color: #333;
-            margin-bottom: 8px;
-        }
-        .empty-subtitle {
-            font-size: 1rem;
-            color: #999;
+        .hero { background: linear-gradient(135deg, rgba(233,30,99,0.88), rgba(156,39,176,0.88)), url('https://images.pexels.com/photos/7679720/pexels-photo-7679720.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'); background-size: cover; background-position: center; min-height: 100vh; display: flex; align-items: center; justify-content: center; position: relative; }
+        .hero-content { text-align: center; color: white; padding: 20px; }
+        .hero-title { font-size: 4rem; font-weight: 800; text-shadow: 0 4px 20px rgba(0,0,0,0.5); margin-bottom: 16px; }
+        .hero-subtitle { font-size: 1.5rem; opacity: 0.95; text-shadow: 0 2px 10px rgba(0,0,0,0.4); margin-bottom: 32px; }
+        .hero-button { background: white; color: #E91E63; padding: 18px 48px; border-radius: 50px; font-size: 1.5rem; font-weight: 700; border: none; cursor: pointer; transition: all 0.3s; box-shadow: 0 8px 30px rgba(0,0,0,0.3); }
+        .hero-button:hover { transform: scale(1.08); }
+        .category-card { transition: transform 0.3s; cursor: pointer; background: white; border-radius: 20px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.08); }
+        .category-card:hover { transform: translateY(-8px); }
+        .category-image { width: 100%; height: 200px; object-fit: cover; }
+        .back-button { background: none; border: none; color: #E91E63; font-size: 1.2rem; font-weight: 600; cursor: pointer; padding: 10px 0; }
+        .back-button:hover { color: #9C27B0; }
+        .admin-btn { background: rgba(255,255,255,0.15); backdrop-filter: blur(10px); padding: 10px 20px; border-radius: 50px; border: 1px solid rgba(255,255,255,0.2); color: white; font-weight: 600; cursor: pointer; transition: all 0.3s; display: inline-flex; align-items: center; gap: 8px; }
+        .admin-btn:hover { background: rgba(255,255,255,0.25); transform: scale(1.05); }
+        .top-bar { position: absolute; top: 20px; left: 20px; right: 20px; display: flex; justify-content: space-between; align-items: center; z-index: 10; flex-wrap: wrap; gap: 10px; }
+        .top-bar .right-btns { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+        .login-box { background: white; border-radius: 24px; padding: 40px; max-width: 400px; width: 90%; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
+        .login-input { width: 100%; padding: 14px 20px; border: 2px solid #eee; border-radius: 12px; font-size: 1.1rem; text-align: center; }
+        .login-input:focus { border-color: #E91E63; outline: none; }
+        .login-btn { background: #E91E63; color: white; border: none; padding: 14px; border-radius: 12px; font-size: 1.1rem; font-weight: 700; cursor: pointer; width: 100%; }
+        .login-btn:hover { background: #9C27B0; }
+        .error-msg { color: #F44336; font-size: 0.9rem; margin-top: 8px; text-align: center; }
+        .empty-state { background: white; border-radius: 16px; padding: 60px 20px; text-align: center; box-shadow: 0 4px 12px rgba(0,0,0,0.06); }
+        .empty-icon { font-size: 4rem; margin-bottom: 16px; }
+        .empty-title { font-size: 1.5rem; font-weight: 700; color: #333; margin-bottom: 8px; }
+        .empty-subtitle { font-size: 1rem; color: #999; }
+        .admin-tabs { display: flex; gap: 8px; background: white; padding: 6px; border-radius: 16px; margin-bottom: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); flex-wrap: wrap; }
+        .admin-tab { flex: 1; padding: 12px 16px; border-radius: 12px; font-weight: 600; border: none; cursor: pointer; min-width: 80px; text-align: center; background: transparent; color: #666; }
+        .admin-tab.active { background: #E91E63; color: white; }
+        .admin-tab:hover:not(.active) { background: #f5f5f5; }
+        .form-card { background: white; border-radius: 16px; padding: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.06); margin-bottom: 20px; }
+        .form-card input, .form-card select, .form-card textarea { width: 100%; padding: 12px 16px; border: 1px solid #ddd; border-radius: 10px; font-size: 1rem; margin-bottom: 12px; text-align: right; font-family: inherit; }
+        .form-card input:focus, .form-card select:focus, .form-card textarea:focus { border-color: #E91E63; outline: none; }
+        .form-card textarea { min-height: 80px; resize: vertical; }
+        .form-card button { background: #E91E63; color: white; border: none; padding: 12px 24px; border-radius: 10px; font-weight: 600; cursor: pointer; width: 100%; }
+        .form-card button:hover { background: #9C27B0; }
+        .form-card .file-input { padding: 10px; background: #f9f9f9; border: 2px dashed #ddd; border-radius: 10px; cursor: pointer; text-align: center; }
+        .form-card .file-input:hover { border-color: #E91E63; }
+        .image-preview { width: 100%; max-height: 150px; object-fit: contain; border-radius: 10px; margin-top: 8px; background: #f9f9f9; }
+        .product-item { background: white; border-radius: 12px; padding: 16px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 8px rgba(0,0,0,0.06); flex-wrap: wrap; gap: 10px; }
+        .product-item .info { display: flex; align-items: center; gap: 12px; flex: 1; }
+        .product-item .info img { width: 50px; height: 50px; border-radius: 10px; object-fit: cover; }
+        .product-item .info .details { display: flex; flex-direction: column; }
+        .product-item .info .details .name { font-weight: 700; color: #333; }
+        .product-item .info .details .price { font-size: 0.9rem; color: #E91E63; font-weight: 600; }
+        .product-item .info .details .desc { font-size: 0.8rem; color: #999; }
+        .product-item .actions button { border: none; padding: 6px 14px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 0.85rem; background: #F44336; color: white; }
+        .product-item .actions button:hover { background: #D32F2F; }
+        .news-item { background: white; border-radius: 12px; padding: 14px 16px; margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+        .news-item .content { flex: 1; color: #333; }
+        .news-item .delete-news { background: #F44336; color: white; border: none; padding: 4px 14px; border-radius: 6px; cursor: pointer; font-weight: 600; }
+        .news-item .delete-news:hover { background: #D32F2F; }
+        .booking-item { background: white; border-radius: 12px; padding: 16px; margin-bottom: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+        .booking-item .header { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+        .booking-item .customer { font-weight: 700; color: #333; }
+        .booking-item .product { color: #666; font-size: 0.95rem; }
+        .booking-item .message { background: #f9f9f9; padding: 10px; border-radius: 8px; margin: 8px 0; font-size: 0.95rem; color: #555; }
+        .booking-item .status { padding: 4px 12px; border-radius: 20px; font-size: 0.8rem; font-weight: 600; }
+        .booking-item .status.pending { background: #FFF3E0; color: #FF9800; }
+        .booking-item .status.approved { background: #E8F5E9; color: #4CAF50; }
+        .booking-item .status.rejected { background: #FFEBEE; color: #F44336; }
+        .booking-item .actions { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+        .booking-item .actions button { border: none; padding: 6px 16px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 0.85rem; color: white; }
+        .booking-item .actions .approve { background: #4CAF50; }
+        .booking-item .actions .approve:hover { background: #388E3C; }
+        .booking-item .actions .reject { background: #F44336; }
+        .booking-item .actions .reject:hover { background: #D32F2F; }
+        .booking-item .actions .delete-booking { background: #9E9E9E; }
+        .booking-item .actions .delete-booking:hover { background: #757575; }
+        .change-password-form input { width: 100%; padding: 12px 16px; border: 1px solid #ddd; border-radius: 10px; font-size: 1rem; margin-bottom: 12px; text-align: right; }
+        .change-password-form input:focus { border-color: #E91E63; outline: none; }
+        .change-password-form button { background: #E91E63; color: white; border: none; padding: 12px 24px; border-radius: 10px; font-weight: 600; cursor: pointer; width: 100%; margin-top: 12px; }
+        .change-password-form button:hover { background: #9C27B0; }
+        .booking-form { background: white; border-radius: 16px; padding: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.06); margin-top: 20px; }
+        .booking-form input, .booking-form textarea { width: 100%; padding: 12px 16px; border: 1px solid #ddd; border-radius: 10px; font-size: 1rem; margin-bottom: 12px; text-align: right; font-family: inherit; }
+        .booking-form input:focus, .booking-form textarea:focus { border-color: #E91E63; outline: none; }
+        .booking-form button { background: #E91E63; color: white; border: none; padding: 12px 24px; border-radius: 10px; font-weight: 600; cursor: pointer; width: 100%; }
+        .booking-form button:hover { background: #9C27B0; }
+        .toast { position: fixed; top: 20px; left: 50%; transform: translateX(-50%); z-index: 9999; padding: 14px 28px; border-radius: 12px; font-weight: 700; font-size: 1rem; box-shadow: 0 10px 40px rgba(0,0,0,0.2); animation: slideDown 0.5s ease; text-align: center; max-width: 90%; }
+        .toast.success { background: #4CAF50; color: white; }
+        .toast.error { background: #F44336; color: white; }
+        .toast.info { background: #2196F3; color: white; }
+        @keyframes slideDown { from { opacity: 0; transform: translateX(-50%) translateY(-50px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
+        .toast.hide { animation: slideUp 0.5s ease forwards; }
+        @keyframes slideUp { from { opacity: 1; transform: translateX(-50%) translateY(0); } to { opacity: 0; transform: translateX(-50%) translateY(-50px); } }
+        .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 9998; backdrop-filter: blur(4px); }
+        .modal-box { background: white; border-radius: 24px; padding: 32px; max-width: 420px; width: 90%; box-shadow: 0 20px 60px rgba(0,0,0,0.3); text-align: center; }
+        .modal-box .modal-icon { font-size: 3rem; margin-bottom: 12px; }
+        .modal-box .modal-title { font-size: 1.3rem; font-weight: 700; color: #333; margin-bottom: 8px; }
+        .modal-box .modal-message { font-size: 1rem; color: #666; margin-bottom: 20px; }
+        .modal-box .modal-actions { display: flex; gap: 10px; justify-content: center; }
+        .modal-box .modal-actions button { border: none; padding: 10px 30px; border-radius: 10px; font-weight: 600; font-size: 1rem; cursor: pointer; transition: all 0.3s; }
+        .modal-box .modal-actions .cancel { background: #f5f5f5; color: #666; }
+        .modal-box .modal-actions .cancel:hover { background: #e0e0e0; }
+        .modal-box .modal-actions .confirm { background: #F44336; color: white; }
+        .modal-box .modal-actions .confirm:hover { background: #D32F2F; }
+        @media (max-width: 640px) {
+            .hero-title { font-size: 2.5rem; }
+            .hero-subtitle { font-size: 1.1rem; }
+            .hero-button { padding: 14px 30px; font-size: 1.1rem; }
+            .admin-btn { padding: 6px 12px; font-size: 0.75rem; }
+            .product-item { flex-direction: column; align-items: stretch; }
+            .admin-tab { font-size: 0.8rem; padding: 8px 10px; }
+            .toast { font-size: 0.9rem; padding: 12px 20px; }
+            .modal-box { padding: 24px; }
         }
     </style>
 </head>
@@ -113,97 +122,699 @@
     <div id="root"></div>
 
     <script type="text/babel">
-        const { useState } = React;
+        const { useState, useEffect, useCallback } = React;
 
-        // ========================================
-        // 8 أصناف
-        // ========================================
+        // =============================================
+        // 1. إعداد Supabase
+        // =============================================
+        const SUPABASE_URL = 'https://gynzlzigjwbacxbbvraz.supabase.co';
+        const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imd5bnpsemlnandiYWN4YmJ2cmF6Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODY5NTg2NzIsImV4cCI6MjEwMjUzNDY3Mn0.SMuCAPa_kr3IoTzV5fACxzgzxpSJtciTqt71dPcTGb8';
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // =============================================
+        // 2. كلمة المرور
+        // =============================================
+        let ADMIN_PASSWORD = localStorage.getItem('admin_password') || 'admin123';
+
+        const savePassword = (newPassword) => {
+            ADMIN_PASSWORD = newPassword;
+            localStorage.setItem('admin_password', newPassword);
+        };
+
+        // =============================================
+        // 3. الأصناف
+        // =============================================
         const categories = [
-            { 
-                id: 1, 
-                name: 'نسائي', 
-                image: 'https://images.pexels.com/photos/2065195/pexels-photo-2065195.jpeg?auto=compress&cs=tinysrgb&w=600' 
-            },
-            { 
-                id: 2, 
-                name: 'رجالي', 
-                image: 'https://images.pexels.com/photos/1043474/pexels-photo-1043474.jpeg?auto=compress&cs=tinysrgb&w=600' 
-            },
-            { 
-                id: 3, 
-                name: 'بناتي', 
-                image: 'https://images.pexels.com/photos/1251171/pexels-photo-1251171.jpeg?auto=compress&cs=tinysrgb&w=600' 
-            },
-            { 
-                id: 4, 
-                name: 'صبياني', 
-                image: 'https://images.pexels.com/photos/7958357/pexels-photo-7958357.jpeg?auto=compress&cs=tinysrgb&w=600' 
-            },
-            { 
-                id: 5, 
-                name: 'محاير بناتي', 
-                image: 'https://images.pexels.com/photos/1655670/pexels-photo-1655670.jpeg?auto=compress&cs=tinysrgb&w=600' 
-            },
-            { 
-                id: 6, 
-                name: 'محاير صبياني', 
-                image: 'https://images.pexels.com/photos/2712935/pexels-photo-2712935.jpeg?auto=compress&cs=tinysrgb&w=600' 
-            },
-            { 
-                id: 7, 
-                name: 'مكياج', 
-                image: 'https://images.pexels.com/photos/4041392/pexels-photo-4041392.jpeg?auto=compress&cs=tinysrgb&w=600' 
-            },
-            { 
-                id: 8, 
-                name: 'اكسسوارات', 
-                image: 'https://images.pexels.com/photos/1191531/pexels-photo-1191531.jpeg?auto=compress&cs=tinysrgb&w=600' 
-            },
+            { id: 1, name: 'نسائي', image: 'https://images.pexels.com/photos/2065195/pexels-photo-2065195.jpeg?auto=compress&cs=tinysrgb&w=600' },
+            { id: 2, name: 'رجالي', image: 'https://images.pexels.com/photos/1043474/pexels-photo-1043474.jpeg?auto=compress&cs=tinysrgb&w=600' },
+            { id: 3, name: 'بناتي', image: 'https://images.pexels.com/photos/1251171/pexels-photo-1251171.jpeg?auto=compress&cs=tinysrgb&w=600' },
+            { id: 4, name: 'صبياني', image: 'https://images.pexels.com/photos/6958678/pexels-photo-6958678.jpeg?auto=compress&cs=tinysrgb&w=600' },
+            { id: 5, name: 'محاير بناتي', image: 'https://images.pexels.com/photos/2012551/pexels-photo-2012551.jpeg?auto=compress&cs=tinysrgb&w=600' },
+            { id: 6, name: 'محاير صبياني', image: 'https://images.pexels.com/photos/7958357/pexels-photo-7958357.jpeg?auto=compress&cs=tinysrgb&w=600' },
+            { id: 7, name: 'مكياج', image: 'https://images.pexels.com/photos/4041392/pexels-photo-4041392.jpeg?auto=compress&cs=tinysrgb&w=600' },
+            { id: 8, name: 'اكسسوارات', image: 'https://images.pexels.com/photos/1191531/pexels-photo-1191531.jpeg?auto=compress&cs=tinysrgb&w=600' },
         ];
 
-        // ========================================
-        // صفحة المنتجات (فارغة حالياً)
-        // ========================================
-        function ProductsPage({ categoryId, onBack }) {
-            const category = categories.find(c => c.id === categoryId);
+        // =============================================
+        // 4. دوال Supabase
+        // =============================================
+        const fetchProducts = async () => {
+            try {
+                const { data, error } = await supabase.from('products').select('*').order('created_at', { ascending: false });
+                if (error) throw error;
+                return data || [];
+            } catch (error) {
+                console.error('❌ Error fetching products:', error);
+                return [];
+            }
+        };
 
+        const deleteProductFromSupabase = async (id) => {
+            try {
+                const { error } = await supabase.from('products').delete().eq('id', id);
+                if (error) throw error;
+                return true;
+            } catch (error) {
+                throw error;
+            }
+        };
+
+        const fetchNews = async () => {
+            try {
+                const { data, error } = await supabase.from('news').select('*').order('created_at', { ascending: false });
+                if (error) throw error;
+                return data || [];
+            } catch (error) {
+                console.error('❌ Error fetching news:', error);
+                return [];
+            }
+        };
+
+        const addNewsToSupabase = async (content) => {
+            try {
+                const { data, error } = await supabase.from('news').insert([{ content }]).select();
+                if (error) throw error;
+                return data[0];
+            } catch (error) {
+                throw error;
+            }
+        };
+
+        const deleteNewsFromSupabase = async (id) => {
+            try {
+                const { error } = await supabase.from('news').delete().eq('id', id);
+                if (error) throw error;
+                return true;
+            } catch (error) {
+                throw error;
+            }
+        };
+
+        const fetchBookings = async () => {
+            try {
+                const { data, error } = await supabase.from('bookings').select('*').order('created_at', { ascending: false });
+                if (error) throw error;
+                return data || [];
+            } catch (error) {
+                console.error('❌ Error fetching bookings:', error);
+                return [];
+            }
+        };
+
+        const addBookingToSupabase = async (booking) => {
+            try {
+                const { data, error } = await supabase.from('bookings').insert([booking]).select();
+                if (error) throw error;
+                return data[0];
+            } catch (error) {
+                throw error;
+            }
+        };
+
+        const updateBookingStatusInSupabase = async (id, status) => {
+            try {
+                const { error } = await supabase.from('bookings').update({ status }).eq('id', id);
+                if (error) throw error;
+                return true;
+            } catch (error) {
+                throw error;
+            }
+        };
+
+        const deleteBookingFromSupabase = async (id) => {
+            try {
+                const { error } = await supabase.from('bookings').delete().eq('id', id);
+                if (error) throw error;
+                return true;
+            } catch (error) {
+                throw error;
+            }
+        };
+
+        const uploadImage = async (file, path) => {
+            try {
+                const { data, error } = await supabase.storage.from('product-images').upload(path, file);
+                if (error) throw error;
+                const { data: urlData } = supabase.storage.from('product-images').getPublicUrl(path);
+                return urlData.publicUrl;
+            } catch (error) {
+                throw error;
+            }
+        };
+
+        // =============================================
+        // 5. مكونات UI
+        // =============================================
+        function Toast({ message, type, onHide }) {
+            useEffect(() => {
+                const timer = setTimeout(onHide, 3000);
+                return () => clearTimeout(timer);
+            }, [onHide]);
+            return <div className={`toast ${type}`}>{message}</div>;
+        }
+
+        function ConfirmModal({ title, message, onConfirm, onCancel, icon }) {
             return (
-                <div className="min-h-screen bg-gray-50 p-6">
-                    <div className="max-w-6xl mx-auto">
-                        <button onClick={onBack} className="back-button flex items-center gap-2">
-                            ← العودة إلى الأصناف
-                        </button>
-                        <h2 className="text-3xl font-bold text-center text-gray-800 my-6">{category?.name}</h2>
-                        
-                        {/* ✅ رسالة "لا يوجد منتجات" */}
-                        <div className="empty-state">
-                            <div className="empty-icon">📦</div>
-                            <div className="empty-title">لا يوجد منتجات</div>
-                            <div className="empty-subtitle">سيتم إضافة المنتجات قريباً</div>
+                <div className="modal-overlay" onClick={onCancel}>
+                    <div className="modal-box" onClick={(e) => e.stopPropagation()}>
+                        <div className="modal-icon">{icon || '⚠️'}</div>
+                        <div className="modal-title">{title}</div>
+                        <div className="modal-message">{message}</div>
+                        <div className="modal-actions">
+                            <button className="cancel" onClick={onCancel}>إلغاء</button>
+                            <button className="confirm" onClick={onConfirm}>تأكيد</button>
                         </div>
                     </div>
                 </div>
             );
         }
 
-        // ========================================
-        // صفحة الأصناف (تسوق الآن)
-        // ========================================
+        // =============================================
+        // 6. تسجيل الدخول
+        // =============================================
+        function LoginPage({ onLogin, error, setError }) {
+            const [password, setPassword] = useState('');
+
+            const handleSubmit = (e) => {
+                e.preventDefault();
+                if (password === ADMIN_PASSWORD) {
+                    setError('');
+                    onLogin();
+                } else {
+                    setError('❌ كلمة المرور غير صحيحة');
+                    setPassword('');
+                }
+            };
+
+            return (
+                <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
+                    <div className="login-box">
+                        <div className="text-center mb-6">
+                            <div className="text-4xl mb-2">🔐</div>
+                            <h2 className="text-2xl font-bold text-gray-800">لوحة التحكم</h2>
+                            <p className="text-gray-500">أدخل كلمة المرور للمتابعة</p>
+                        </div>
+                        <form onSubmit={handleSubmit}>
+                            <input type="password" className="login-input" placeholder="كلمة المرور" value={password} onChange={(e) => setPassword(e.target.value)} autoFocus />
+                            {error && <div className="error-msg">{error}</div>}
+                            <button type="submit" className="login-btn mt-4">دخول</button>
+                        </form>
+                    </div>
+                </div>
+            );
+        }
+
+        // =============================================
+        // 7. صفحة المدير (المُصححة)
+        // =============================================
+        function AdminPage({ onBack, products, setProducts, news, setNews, bookings, setBookings, categories, showToast }) {
+            const [activeTab, setActiveTab] = useState('products');
+            const [newProduct, setNewProduct] = useState({ name: '', price: '', description: '', category_id: categories[0]?.id || '', image: '' });
+            const [newNews, setNewNews] = useState('');
+            const [oldPassword, setOldPassword] = useState('');
+            const [newPassword, setNewPassword] = useState('');
+            const [confirmPassword, setConfirmPassword] = useState('');
+            const [passwordMessage, setPasswordMessage] = useState('');
+            const [imageFile, setImageFile] = useState(null);
+            const [imagePreview, setImagePreview] = useState('');
+            const [uploading, setUploading] = useState(false);
+            const [modal, setModal] = useState(null);
+
+            // =============================================
+            // ✅ دالة إضافة منتج (المضافة حديثاً)
+            // =============================================
+            const handleAddProduct = useCallback(async () => {
+                console.log('🟢 دالة handleAddProduct تم استدعاؤها!');
+                
+                // التحقق من الحقول المطلوبة
+                if (!newProduct.name.trim() || !newProduct.price.trim() || !newProduct.category_id) {
+                    showToast('❌ الرجاء ملء جميع الحقول المطلوبة', 'error');
+                    return;
+                }
+
+                setUploading(true);
+                try {
+                    let imageUrl = newProduct.image || 'https://images.pexels.com/photos/2065195/pexels-photo-2065195.jpeg?auto=compress&cs=tinysrgb&w=300';
+                    
+                    // إذا تم اختيار صورة، قم برفعها
+                    if (imageFile) {
+                        try {
+                            const fileExt = imageFile.name.split('.').pop();
+                            const fileName = `${Date.now()}_${Math.random().toString(36).substring(7)}.${fileExt}`;
+                            imageUrl = await uploadImage(imageFile, fileName);
+                        } catch (uploadError) {
+                            console.warn('⚠️ فشل رفع الصورة، سيتم استخدام صورة افتراضية');
+                            imageUrl = 'https://images.pexels.com/photos/2065195/pexels-photo-2065195.jpeg?auto=compress&cs=tinysrgb&w=300';
+                        }
+                    }
+
+                    const product = {
+                        name: newProduct.name,
+                        price: parseFloat(newProduct.price),
+                        description: newProduct.description || '',
+                        category_id: parseInt(newProduct.category_id),
+                        image_url: imageUrl,
+                    };
+
+                    const { data, error } = await supabase
+                        .from('products')
+                        .insert([product])
+                        .select();
+
+                    if (error) {
+                        showToast('❌ ' + error.message, 'error');
+                        return;
+                    }
+
+                    if (data && data.length > 0) {
+                        setProducts(prev => [data[0], ...prev]);
+                        setNewProduct({ name: '', price: '', description: '', category_id: categories[0]?.id || '', image: '' });
+                        setImagePreview('');
+                        setImageFile(null);
+                        showToast('✅ تم إضافة المنتج بنجاح', 'success');
+                    }
+                } catch (error) {
+                    console.error('❌ خطأ غير متوقع:', error);
+                    showToast('❌ حدث خطأ أثناء إضافة المنتج', 'error');
+                } finally {
+                    setUploading(false);
+                }
+            }, [newProduct, imageFile, categories, setProducts, showToast]);
+
+            // ===== حذف منتج =====
+            const handleDeleteProduct = (id, name) => {
+                setModal({
+                    title: '🗑️ تأكيد الحذف',
+                    message: `هل أنت متأكد من حذف المنتج "${name}"؟`,
+                    icon: '🗑️',
+                    onConfirm: async () => {
+                        setModal(null);
+                        try {
+                            await deleteProductFromSupabase(id);
+                            setProducts(prev => prev.filter(p => p.id !== id));
+                            showToast('✅ تم حذف المنتج بنجاح', 'success');
+                        } catch (error) {
+                            showToast('❌ حدث خطأ أثناء حذف المنتج', 'error');
+                        }
+                    },
+                    onCancel: () => setModal(null)
+                });
+            };
+
+            // ===== إضافة خبر =====
+            const handleAddNews = async () => {
+                if (!newNews.trim()) {
+                    showToast('❌ الرجاء إدخال نص الخبر', 'error');
+                    return;
+                }
+                try {
+                    const added = await addNewsToSupabase(newNews);
+                    if (added) {
+                        setNews(prev => [added, ...prev]);
+                        setNewNews('');
+                        showToast('✅ تم إضافة الخبر بنجاح', 'success');
+                    }
+                } catch (error) {
+                    showToast('❌ حدث خطأ أثناء إضافة الخبر', 'error');
+                }
+            };
+
+            // ===== حذف خبر =====
+            const handleDeleteNews = (id) => {
+                setModal({
+                    title: '🗑️ تأكيد الحذف',
+                    message: `هل أنت متأكد من حذف هذا الخبر؟`,
+                    icon: '🗑️',
+                    onConfirm: async () => {
+                        setModal(null);
+                        try {
+                            await deleteNewsFromSupabase(id);
+                            setNews(prev => prev.filter(n => n.id !== id));
+                            showToast('✅ تم حذف الخبر بنجاح', 'success');
+                        } catch (error) {
+                            showToast('❌ حدث خطأ أثناء حذف الخبر', 'error');
+                        }
+                    },
+                    onCancel: () => setModal(null)
+                });
+            };
+
+            // ===== تغيير حالة الحجز =====
+            const handleUpdateBookingStatus = async (id, status) => {
+                try {
+                    await updateBookingStatusInSupabase(id, status);
+                    setBookings(prev => prev.map(b => b.id === id ? { ...b, status } : b));
+                    showToast(`✅ تم ${status === 'approved' ? 'قبول' : 'رفض'} الحجز بنجاح`, 'success');
+                } catch (error) {
+                    showToast('❌ حدث خطأ أثناء تحديث الحجز', 'error');
+                }
+            };
+
+            // ===== حذف حجز =====
+            const handleDeleteBooking = (id, customer) => {
+                setModal({
+                    title: '🗑️ تأكيد الحذف',
+                    message: `هل أنت متأكد من حذف حجز "${customer}"؟`,
+                    icon: '🗑️',
+                    onConfirm: async () => {
+                        setModal(null);
+                        try {
+                            await deleteBookingFromSupabase(id);
+                            setBookings(prev => prev.filter(b => b.id !== id));
+                            showToast('✅ تم حذف الحجز بنجاح', 'success');
+                        } catch (error) {
+                            showToast('❌ حدث خطأ أثناء حذف الحجز', 'error');
+                        }
+                    },
+                    onCancel: () => setModal(null)
+                });
+            };
+
+            // ===== تغيير كلمة المرور =====
+            const handleChangePassword = () => {
+                if (oldPassword !== ADMIN_PASSWORD) {
+                    showToast('❌ كلمة المرور الحالية غير صحيحة', 'error');
+                    return;
+                }
+                if (newPassword.length < 4) {
+                    showToast('❌ كلمة المرور يجب أن تكون 4 أحرف على الأقل', 'error');
+                    return;
+                }
+                if (newPassword !== confirmPassword) {
+                    showToast('❌ كلمتا المرور غير متطابقتين', 'error');
+                    return;
+                }
+                savePassword(newPassword);
+                setPasswordMessage('✅ تم تغيير كلمة المرور بنجاح');
+                showToast('✅ تم تغيير كلمة المرور بنجاح', 'success');
+                setOldPassword('');
+                setNewPassword('');
+                setConfirmPassword('');
+                setTimeout(() => setPasswordMessage(''), 3000);
+            };
+
+            // ===== معالجة رفع الصورة =====
+            const handleImageUpload = (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    setImageFile(file);
+                    const reader = new FileReader();
+                    reader.onloadend = () => setImagePreview(reader.result);
+                    reader.readAsDataURL(file);
+                }
+            };
+
+            // ===== عرض المنتجات =====
+            const renderProducts = () => {
+                if (products.length === 0) {
+                    return <div className="empty-state"><div className="empty-icon">📦</div><div className="empty-title">لا توجد منتجات</div><div className="empty-subtitle">أضف منتجك الأول الآن</div></div>;
+                }
+                return products.map(p => {
+                    const cat = categories.find(c => c.id === p.category_id);
+                    return (
+                        <div key={p.id} className="product-item">
+                            <div className="info">
+                                <img src={p.image_url || 'https://images.pexels.com/photos/2065195/pexels-photo-2065195.jpeg?auto=compress&cs=tinysrgb&w=300'} alt={p.name} />
+                                <div className="details">
+                                    <span className="name">{p.name}</span>
+                                    <span className="price">{p.price} ريال</span>
+                                    <span className="desc">{p.description || 'لا يوجد وصف'}</span>
+                                    <span className="text-xs text-gray-400">🏷️ {cat?.name || 'غير مصنف'}</span>
+                                </div>
+                            </div>
+                            <div className="actions">
+                                <button onClick={() => handleDeleteProduct(p.id, p.name)}>🗑️ حذف</button>
+                            </div>
+                        </div>
+                    );
+                });
+            };
+
+            // ===== عرض الأخبار =====
+            const renderNews = () => {
+                if (news.length === 0) {
+                    return <div className="empty-state"><div className="empty-icon">📰</div><div className="empty-title">لا توجد أخبار</div><div className="empty-subtitle">أضف خبراً جديداً</div></div>;
+                }
+                return news.map(item => (
+                    <div key={item.id} className="news-item">
+                        <span className="content">📢 {item.content}</span>
+                        <button className="delete-news" onClick={() => handleDeleteNews(item.id)}>🗑️ حذف</button>
+                    </div>
+                ));
+            };
+
+            // ===== عرض الحجوزات =====
+            const renderBookings = () => {
+                if (bookings.length === 0) {
+                    return <div className="empty-state"><div className="empty-icon">📋</div><div className="empty-title">لا توجد حجوزات</div><div className="empty-subtitle">سيظهر هنا طلبات الزبائن</div></div>;
+                }
+                return bookings.map(b => (
+                    <div key={b.id} className="booking-item">
+                        <div className="header">
+                            <div>
+                                <span className="customer">👤 {b.customer_name}</span>
+                                <span className="product mr-3">🛍️ {b.product_name || 'منتج'}</span>
+                            </div>
+                            <span className={`status ${b.status}`}>
+                                {b.status === 'pending' ? '⏳ معلق' : b.status === 'approved' ? '✅ مقبول' : '❌ مرفوض'}
+                            </span>
+                        </div>
+                        {b.message && <div className="message">💬 {b.message}</div>}
+                        <div className="text-sm text-gray-400 mb-2">📅 {new Date(b.created_at).toLocaleDateString('ar-EG')}</div>
+                        <div className="actions">
+                            {b.status === 'pending' && (
+                                <>
+                                    <button className="approve" onClick={() => handleUpdateBookingStatus(b.id, 'approved')}>✅ قبول</button>
+                                    <button className="reject" onClick={() => handleUpdateBookingStatus(b.id, 'rejected')}>❌ رفض</button>
+                                </>
+                            )}
+                            <button className="delete-booking" onClick={() => handleDeleteBooking(b.id, b.customer_name)}>🗑️ حذف</button>
+                        </div>
+                    </div>
+                ));
+            };
+
+            return (
+                <div className="min-h-screen bg-gray-50 p-6">
+                    {modal && <ConfirmModal {...modal} />}
+                    <div className="max-w-6xl mx-auto">
+                        <div className="flex justify-between items-center mb-6 flex-wrap gap-2">
+                            <button onClick={onBack} className="back-button">← العودة إلى المتجر</button>
+                            <h1 className="text-2xl font-bold text-gray-800">🔐 لوحة التحكم</h1>
+                        </div>
+
+                        <div className="admin-tabs">
+                            <button className={`admin-tab ${activeTab === 'products' ? 'active' : ''}`} onClick={() => setActiveTab('products')}>📦 المنتجات</button>
+                            <button className={`admin-tab ${activeTab === 'news' ? 'active' : ''}`} onClick={() => setActiveTab('news')}>📰 الأخبار</button>
+                            <button className={`admin-tab ${activeTab === 'bookings' ? 'active' : ''}`} onClick={() => setActiveTab('bookings')}>📋 الحجوزات</button>
+                            <button className={`admin-tab ${activeTab === 'settings' ? 'active' : ''}`} onClick={() => setActiveTab('settings')}>🔑 الإعدادات</button>
+                        </div>
+
+                        {activeTab === 'products' && (
+                            <div>
+                                <div className="form-card">
+                                    <h3 className="text-lg font-bold mb-4 text-gray-800">➕ إضافة منتج جديد</h3>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        <div>
+                                            <input type="text" placeholder="اسم المنتج *" value={newProduct.name} onChange={(e) => setNewProduct({ ...newProduct, name: e.target.value })} />
+                                            <input type="number" placeholder="السعر (ريال) *" value={newProduct.price} onChange={(e) => setNewProduct({ ...newProduct, price: e.target.value })} />
+                                            <select value={newProduct.category_id} onChange={(e) => setNewProduct({ ...newProduct, category_id: e.target.value })}>
+                                                {categories.map(cat => <option key={cat.id} value={cat.id}>📂 {cat.name}</option>)}
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <textarea placeholder="وصف المنتج (اختياري)" value={newProduct.description} onChange={(e) => setNewProduct({ ...newProduct, description: e.target.value })} />
+                                            <div className="file-input" onClick={() => document.getElementById('imageInput').click()}>
+                                                📷 {imageFile ? imageFile.name : 'اضغط لاختيار صورة من جهازك'}
+                                                <input id="imageInput" type="file" accept="image/*" onChange={handleImageUpload} style={{ display: 'none' }} />
+                                            </div>
+                                            {imagePreview && <img src={imagePreview} className="image-preview" />}
+                                        </div>
+                                    </div>
+                                    <button onClick={handleAddProduct} disabled={uploading}>
+                                        {uploading ? '⏳ جاري الرفع...' : '➕ إضافة المنتج'}
+                                    </button>
+                                </div>
+
+                                <h3 className="text-lg font-bold mb-4 text-gray-800">📦 جميع المنتجات</h3>
+                                {renderProducts()}
+                            </div>
+                        )}
+
+                        {activeTab === 'news' && (
+                            <div>
+                                <div className="form-card">
+                                    <h3 className="text-lg font-bold mb-4 text-gray-800">📝 إضافة خبر جديد</h3>
+                                    <input type="text" placeholder="نص الخبر" value={newNews} onChange={(e) => setNewNews(e.target.value)} />
+                                    <button onClick={handleAddNews}>➕ إضافة الخبر</button>
+                                </div>
+
+                                <h3 className="text-lg font-bold mb-4 text-gray-800">📰 جميع الأخبار</h3>
+                                {renderNews()}
+                            </div>
+                        )}
+
+                        {activeTab === 'bookings' && (
+                            <div>
+                                <h3 className="text-lg font-bold mb-4 text-gray-800">📋 إدارة الحجوزات</h3>
+                                {renderBookings()}
+                            </div>
+                        )}
+
+                        {activeTab === 'settings' && (
+                            <div>
+                                <div className="form-card">
+                                    <h3 className="text-lg font-bold mb-4 text-gray-800">🔑 تغيير كلمة المرور</h3>
+                                    <div className="change-password-form">
+                                        <input type="password" placeholder="كلمة المرور الحالية" value={oldPassword} onChange={(e) => setOldPassword(e.target.value)} />
+                                        <input type="password" placeholder="كلمة المرور الجديدة" value={newPassword} onChange={(e) => setNewPassword(e.target.value)} />
+                                        <input type="password" placeholder="تأكيد كلمة المرور الجديدة" value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
+                                        {passwordMessage && <div className={`text-center mt-2 ${passwordMessage.includes('✅') ? 'text-green-600' : 'text-red-500'}`}>{passwordMessage}</div>}
+                                        <button onClick={handleChangePassword}>🔑 تغيير كلمة المرور</button>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            );
+        }
+
+        // =============================================
+        // 8. بقية الصفحات (نفس الكود)
+        // =============================================
+        function BookingsPage({ onBack, bookings }) {
+            return (
+                <div className="min-h-screen bg-gray-50 p-6">
+                    <div className="max-w-4xl mx-auto">
+                        <button onClick={onBack} className="back-button">← العودة إلى الرئيسية</button>
+                        <h2 className="text-3xl font-bold text-center text-gray-800 my-6">📋 حجوزاتي</h2>
+                        {bookings.length === 0 ? (
+                            <div className="empty-state"><div className="empty-icon">📭</div><div className="empty-title">لا توجد حجوزات</div><div className="empty-subtitle">قم بحجز منتجك المفضل الآن</div></div>
+                        ) : (
+                            <div className="space-y-4">
+                                {bookings.map(b => (
+                                    <div key={b.id} className="bg-white rounded-2xl p-6 shadow-md">
+                                        <div className="flex justify-between items-start flex-wrap gap-2">
+                                            <div>
+                                                <p className="text-sm text-gray-500">📅 {new Date(b.created_at).toLocaleDateString('ar-EG')}</p>
+                                                <h3 className="text-lg font-bold text-gray-800">🛍️ {b.product_name || 'منتج'}</h3>
+                                                <p className="text-gray-600">👤 {b.customer_name}</p>
+                                                {b.message && <p className="text-gray-500 text-sm mt-1">💬 {b.message}</p>}
+                                            </div>
+                                            <span className={`px-3 py-1 rounded-full text-sm font-semibold ${b.status === 'pending' ? 'bg-yellow-100 text-yellow-700' : b.status === 'approved' ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
+                                                {b.status === 'pending' ? '⏳ معلق' : b.status === 'approved' ? '✅ مقبول' : '❌ مرفوض'}
+                                            </span>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+                </div>
+            );
+        }
+
+        function ProductsPage({ categoryId, onBack, products, onProductSelect }) {
+            const category = categories.find(c => c.id === categoryId);
+            const prods = products.filter(p => p.category_id === categoryId);
+
+            return (
+                <div className="min-h-screen bg-gray-50 p-6">
+                    <div className="max-w-6xl mx-auto">
+                        <button onClick={onBack} className="back-button">← العودة إلى الأصناف</button>
+                        <h2 className="text-3xl font-bold text-center text-gray-800 my-6">{category?.name}</h2>
+                        {prods.length === 0 ? (
+                            <div className="empty-state"><div className="empty-icon">📦</div><div className="empty-title">لا يوجد منتجات</div><div className="empty-subtitle">سيتم إضافة المنتجات قريباً</div></div>
+                        ) : (
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                                {prods.map(p => (
+                                    <div key={p.id} className="bg-white rounded-2xl shadow-lg overflow-hidden transition hover:scale-105">
+                                        <img src={p.image_url || 'https://images.pexels.com/photos/2065195/pexels-photo-2065195.jpeg?auto=compress&cs=tinysrgb&w=300'} alt={p.name} className="w-full h-56 object-cover" />
+                                        <div className="p-4 text-center">
+                                            <h3 className="text-lg font-bold text-gray-800">{p.name}</h3>
+                                            {p.description && <p className="text-sm text-gray-500 mt-1">{p.description}</p>}
+                                            <p className="text-pink-600 font-bold text-xl mt-2">{p.price} ريال</p>
+                                            <button onClick={() => onProductSelect(p)} className="mt-3 bg-pink-600 text-white px-8 py-2 rounded-full hover:bg-pink-700 transition">
+                                                📋 حجز الآن
+                                            </button>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        )}
+                    </div>
+                </div>
+            );
+        }
+
+        function BookingFormPage({ onBack, product, onBookingAdded, showToast }) {
+            const [customerName, setCustomerName] = useState('');
+            const [message, setMessage] = useState('');
+            const [submitting, setSubmitting] = useState(false);
+
+            const handleSubmit = async (e) => {
+                e.preventDefault();
+                if (!customerName.trim()) {
+                    showToast('❌ الرجاء إدخال اسمك', 'error');
+                    return;
+                }
+
+                setSubmitting(true);
+                try {
+                    const booking = {
+                        customer_name: customerName,
+                        product_id: product.id,
+                        product_name: product.name,
+                        message: message || '',
+                        status: 'pending',
+                    };
+                    const added = await addBookingToSupabase(booking);
+                    if (added) {
+                        onBookingAdded(added);
+                        showToast('✅ تم حجز المنتج بنجاح! سيتم مراجعة طلبك من قبل الإدارة.', 'success');
+                        setCustomerName('');
+                        setMessage('');
+                        onBack();
+                    }
+                } catch (error) {
+                    showToast('❌ حدث خطأ أثناء الحجز', 'error');
+                } finally {
+                    setSubmitting(false);
+                }
+            };
+
+            return (
+                <div className="min-h-screen bg-gray-50 p-6">
+                    <div className="max-w-2xl mx-auto">
+                        <button onClick={onBack} className="back-button">← العودة إلى المنتجات</button>
+                        <h2 className="text-3xl font-bold text-center text-gray-800 my-6">📝 حجز المنتج</h2>
+                        <div className="bg-white rounded-2xl p-6 shadow-md mb-6">
+                            <h3 className="text-xl font-bold text-gray-800">{product.name}</h3>
+                            <p className="text-pink-600 font-bold">{product.price} ريال</p>
+                            {product.description && <p className="text-gray-500 mt-1">{product.description}</p>}
+                        </div>
+                        <form onSubmit={handleSubmit} className="booking-form">
+                            <input type="text" placeholder="اسمك *" value={customerName} onChange={(e) => setCustomerName(e.target.value)} required />
+                            <textarea placeholder="رسالة لصاحب المتجر (اختياري)" value={message} onChange={(e) => setMessage(e.target.value)} rows="3" />
+                            <button type="submit" disabled={submitting}>
+                                {submitting ? '⏳ جاري الحجز...' : '📋 تأكيد الحجز'}
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            );
+        }
+
         function ShopPage({ onCategorySelect, onBack }) {
             return (
                 <div className="min-h-screen bg-gray-50 p-6">
                     <div className="max-w-6xl mx-auto">
-                        <button onClick={onBack} className="back-button flex items-center gap-2">
-                            ← العودة إلى الرئيسية
-                        </button>
+                        <button onClick={onBack} className="back-button">← العودة إلى الرئيسية</button>
                         <h2 className="text-3xl font-bold text-center text-gray-800 my-6">📂 جميع الأصناف</h2>
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
                             {categories.map(cat => (
-                                <div
-                                    key={cat.id}
-                                    onClick={() => onCategorySelect(cat.id)}
-                                    className="category-card"
-                                >
+                                <div key={cat.id} onClick={() => onCategorySelect(cat.id)} className="category-card">
                                     <img src={cat.image} alt={cat.name} className="category-image" />
                                     <div className="p-4 text-center">
                                         <h3 className="text-lg font-bold text-gray-800">{cat.name}</h3>
@@ -217,65 +828,132 @@
             );
         }
 
-        // ========================================
-        // الصفحة الرئيسية
-        // ========================================
-        function HomePage({ onShopNow }) {
+        function HomePage({ onShopNow, onAdminClick, onBookingsClick, news }) {
             return (
                 <div className="hero">
+                    <div className="top-bar">
+                        <div></div>
+                        <div className="right-btns">
+                            <button className="admin-btn" onClick={onBookingsClick}>📋 حجوزاتي</button>
+                            <button className="admin-btn" onClick={onAdminClick}>🔐 لوحة التحكم</button>
+                        </div>
+                    </div>
                     <div className="hero-content">
                         <h1 className="hero-title">✨ ملبوسات جنى</h1>
                         <p className="hero-subtitle">أزياء • مكياج • ملابس صغيرة</p>
-                        <button className="hero-button" onClick={onShopNow}>
-                            🛍️ تسوق الآن
-                        </button>
+                        {news.length > 0 && (
+                            <div className="mb-6 max-w-2xl mx-auto">
+                                {news.map(item => (
+                                    <div key={item.id} className="bg-white/10 backdrop-blur-sm rounded-xl px-4 py-2 mb-2 text-white text-sm">
+                                        📢 {item.content}</div>
+                                ))}
+                            </div>
+                        )}
+                        <button className="hero-button" onClick={onShopNow}>🛍️ تسوق الآن</button>
                     </div>
                 </div>
             );
         }
 
-        // ========================================
-        // التطبيق الرئيسي
-        // ========================================
+        // =============================================
+        // 9. التطبيق الرئيسي
+        // =============================================
         function App() {
             const [currentPage, setCurrentPage] = useState('home');
             const [selectedCategory, setSelectedCategory] = useState(null);
+            const [selectedProduct, setSelectedProduct] = useState(null);
+            const [isAdmin, setIsAdmin] = useState(false);
+            const [loginError, setLoginError] = useState('');
+            const [products, setProducts] = useState([]);
+            const [news, setNews] = useState([]);
+            const [bookings, setBookings] = useState([]);
+            const [loading, setLoading] = useState(true);
+            const [toast, setToast] = useState(null);
 
-            const handleShopNow = () => {
-                setCurrentPage('shop');
+            const showToast = (message, type = 'success') => {
+                setToast({ message, type });
+                setTimeout(() => setToast(null), 3500);
             };
 
-            const handleCategorySelect = (id) => {
-                setSelectedCategory(id);
-                setCurrentPage('products');
+            useEffect(() => {
+                loadAllData();
+            }, []);
+
+            const loadAllData = async () => {
+                setLoading(true);
+                try {
+                    const [productsData, newsData, bookingsData] = await Promise.all([fetchProducts(), fetchNews(), fetchBookings()]);
+                    setProducts(productsData);
+                    setNews(newsData);
+                    setBookings(bookingsData);
+                } catch (error) {
+                    console.error('❌ Error loading data:', error);
+                } finally {
+                    setLoading(false);
+                }
             };
 
-            const handleBackToHome = () => {
-                setCurrentPage('home');
-            };
+            const handleBookingAdded = (booking) => setBookings(prev => [booking, ...prev]);
 
-            const handleBackToShop = () => {
-                setCurrentPage('shop');
-            };
+            const handleShopNow = () => setCurrentPage('shop');
+            const handleCategorySelect = (id) => { setSelectedCategory(id); setCurrentPage('products'); };
+            const handleProductSelect = (product) => { setSelectedProduct(product); setCurrentPage('booking'); };
+            const handleBackToHome = () => setCurrentPage('home');
+            const handleBackToShop = () => setCurrentPage('shop');
+            const handleBackToProducts = () => setCurrentPage('products');
+            const handleAdminClick = () => { setLoginError(''); setCurrentPage('login'); };
+            const handleBookingsClick = () => setCurrentPage('bookings');
+            const handleAdminLogin = () => { setIsAdmin(true); setCurrentPage('admin'); };
+            const handleAdminLogout = () => { setIsAdmin(false); setCurrentPage('home'); };
+
+            if (loading) {
+                return <div className="min-h-screen flex items-center justify-center"><div className="text-2xl">⏳ جاري التحميل...</div></div>;
+            }
 
             return (
-                <div>
-                    {currentPage === 'home' && (
-                        <HomePage onShopNow={handleShopNow} />
-                    )}
-                    {currentPage === 'shop' && (
-                        <ShopPage 
-                            onCategorySelect={handleCategorySelect} 
-                            onBack={handleBackToHome} 
+                <>
+                    {toast && <Toast message={toast.message} type={toast.type} onHide={() => setToast(null)} />}
+                    
+                    {currentPage === 'login' && <LoginPage onLogin={handleAdminLogin} error={loginError} setError={setLoginError} />}
+                    
+                    {isAdmin && currentPage === 'admin' && (
+                        <AdminPage 
+                            onBack={handleAdminLogout}
+                            products={products}
+                            setProducts={setProducts}
+                            news={news}
+                            setNews={setNews}
+                            bookings={bookings}
+                            setBookings={setBookings}
+                            categories={categories}
+                            showToast={showToast}
                         />
                     )}
+                    
+                    {currentPage === 'bookings' && <BookingsPage onBack={handleBackToHome} bookings={bookings} />}
+                    
+                    {currentPage === 'booking' && (
+                        <BookingFormPage 
+                            onBack={handleBackToProducts} 
+                            product={selectedProduct} 
+                            onBookingAdded={handleBookingAdded}
+                            showToast={showToast}
+                        />
+                    )}
+                    
+                    {currentPage === 'shop' && <ShopPage onCategorySelect={handleCategorySelect} onBack={handleBackToHome} />}
+                    
                     {currentPage === 'products' && (
                         <ProductsPage 
                             categoryId={selectedCategory} 
                             onBack={handleBackToShop} 
+                            products={products}
+                            onProductSelect={handleProductSelect}
                         />
                     )}
-                </div>
+                    
+                    {currentPage === 'home' && <HomePage onShopNow={handleShopNow} onAdminClick={handleAdminClick} onBookingsClick={handleBookingsClick} news={news} />}
+                </>
             );
         }
 
